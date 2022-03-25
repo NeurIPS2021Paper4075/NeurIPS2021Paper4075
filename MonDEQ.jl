@@ -113,7 +113,7 @@ function solution_fix_point(x0, W, U, u; η = 1e-10, α = 1e-2, method = "forwar
     return z
 end
 
-function cert(W, U, u, C, n, ϵ, set_input, set_output; me = 0.1307, std = 0.3081)
+function cert(W, U, u, C, c, n, ϵ, set_input, set_output; me = 0.1307, std = 0.3081)
     n_suc = 0; idx_suc = [];
     for k = 1:n
         x0 = (vec(set_input[:,:,k]).-me)./std;
@@ -121,9 +121,9 @@ function cert(W, U, u, C, n, ϵ, set_input, set_output; me = 0.1307, std = 0.308
             if i == set_output[k]+1
                 continue
             else
-                c = C[i,:] - C[set_output[k]+1,:];
-                obj = cert_monDEQ(x0, W, U, u, c, ϵ; nrm = "linf")
-                if obj >= 0
+                ci = C[i,:] - C[set_output[k]+1,:];
+                obj = cert_monDEQ(x0, W, U, u, ci, ϵ; nrm = "linf")
+                if obj >= -c[i] + c[set_output[k]+1]
                     break
                 elseif (i == 10 && set_output[k] <= 8) || (i == 9 && set_output[k] == 9)
                     n_suc += 1
