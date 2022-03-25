@@ -56,10 +56,10 @@ For Certification Model, use the following code to compute the ratio of the (fir
 ```Julia
 test_x, test_y = MNIST.testdata();
 vars = matread("deq_MNIST_SingleFcNet_m=20.mat")
-A = vars["A"]; B = vars["B"]; U = vars["U"]; u = vars["u"]; C = vars["C"];
+A = vars["A"]; B = vars["B"]; U = vars["U"]; u = vars["u"]; C = vars["C"]; c = vars["c"];
 p = size(U, 1); m = 20; W = (1-m)*Matrix(I(p))-A'*A+B-B';
 n = 100; std = 0.3081; e = 0.1/std;
-r = cert(W, U, u, C, n, e, test_x, test_y)
+r = cert(W, U, u, C, c, n, e, test_x, test_y)
 ```
 
 For Lipschitz Model, use the following code to compute the ratio of the (first 100) test examples:
